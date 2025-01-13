@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <title>Link Shortener</title>
+</head>
+<body>
+    <h1>Link Shortener</h1>
+    <div class="container">
+    <form action="/shorten" method="post">
+        <p>Shorten a new link:</p>
+        <input type="text" name="url" placeholder="Enter URL" required>
+        <input type="text" name="name" placeholder="Name of Link" required>
+        <input type="text" name="tag" placeholder="i.e. whatsapp" required>
+        <textarea type="text" name="description" placeholder="Small Description"></textarea>
+        <button type="submit" class="btn">Shorten</button>
+    </form>
+    <% for (const link of links) { %>
+        <div class="link">
+            <p><strong><%=link.link_id %>. <%= link.name %></strong></p>
+            <span><%= link.created_at.toDateString() %></span>
+            <div><strong>Short URL: </strong><span><%=host+link.link_id %></span></div>
+            <div><strong>Redirect URL: </strong><span><%= link.redirect_to %></span></div>
+            <div><strong>TAG(s): </strong><span class="tagname"><%= link.tagname %></span></div>
+            <div><strong>Description: </strong><span><%= link.description %></span></div>
+            <a href="<%=host+link.link_id %>" target="_blank">Go to link</a>
+            <a href="/clicks/<%= link.link_id %>">Veiw Analysis</a>
+            <button type="submit" onclick="deleteLink('<%= link.link_id %>')">Delete</button>
+        </div>
+    <% } %>
+    </div>
+    <script>
+        function deleteLink(linkId) {
+            if (confirm("Are you sure you want to delete this link?")) {
+                fetch(`/delete/${linkId}`, {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                    body: JSON.stringify({ id: linkId }) 
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Link deleted successfully');
+                        window.location.reload(); 
+                    } else {
+                        alert('Failed to delete the link');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the link');
+                });
+            }
+        }
+    </script>
+    
+</body>
+</html>
