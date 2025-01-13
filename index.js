@@ -73,7 +73,6 @@ app.get("/clicks/:id", async (req, res) => {
 app.get("/link/:id", async (req, res) => {
   const { id } = req.params;
   const result = await sql`SELECT redirect_to FROM links WHERE link_id = ${id}`;
-  res.redirect(result[0].redirect_to);
   const details = await axios.get("http://ip-api.com/json/")
   try {
     const updatedUser = await sql`
@@ -97,6 +96,7 @@ app.get("/link/:id", async (req, res) => {
         ${id}
       ) RETURNING *;
     `;
+    res.redirect(result[0].redirect_to);
     console.log('User updated successfully:');
   } catch (error) {
     console.log('Error updating user:');
