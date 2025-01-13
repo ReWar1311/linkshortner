@@ -43,7 +43,7 @@ app.post("/shorten", async (req, res) => {
   const result = await sql`
     INSERT INTO links (redirect_to, name, tagname, description) VALUES (${url}, ${name}, ${tag}, ${description}) RETURNING *;
   `;
-  res.send(result[0]);
+  res.redirect('/');
 });
 
 app.post("/delete/:id", async (req, res) => {
