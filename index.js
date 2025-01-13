@@ -67,7 +67,20 @@ app.get("/clicks/:id", async (req, res) => {
   const result = await sql`SELECT * FROM linkclicks WHERE link_id = ${id}`;
   res.send(result);
 });
+app.get("/ipadress", async (req, res) => {
+  // Capture the user's IP address
+  let userIP = req.ip;
+  console.log(userIP);
 
+
+
+  // If you're using a reverse proxy (like Vercel), check for the x-forwarded-for header
+  if (req.headers['x-forwarded-for']) {
+    userIP = req.headers['x-forwarded-for'].split(',')[0];  // The first IP in the list is the user's original IP
+  }
+
+  console.log(`User's IP Address: ${userIP}`);
+});
 
 
 app.get("/link/:id", async (req, res) => {
