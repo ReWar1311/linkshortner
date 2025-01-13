@@ -9,6 +9,7 @@ form{
     box-shadow: 0 0 10px #00000042;
     border-radius: 10px;
     padding: 20px;
+    margin: 20px;
 }
 form p{
     font-size: 20px;
@@ -25,6 +26,7 @@ input{
     display: flex;
     justify-content: left;
     align-items: top;
+    flex-wrap: wrap;
 }
 textarea{
     padding: 10px;
@@ -49,20 +51,15 @@ button:hover{
 
 
 .link {
-    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    box-shadow: 0 0 10px #00000042;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin: 0 20px;
-    width: 300px;
-    max-width: 400px;
-    transition: transform 0.3s, box-shadow 0.3s ease;
+    margin: 20px;
 }
 
-.link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
 
 .link p {
     font-size: 20px;
@@ -83,7 +80,7 @@ button:hover{
 }
 
 .link div {
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 .link div span {
@@ -99,7 +96,7 @@ button:hover{
     padding: 12px 20px;
     text-decoration: none;
     font-size: 16px;
-    margin-top: 15px;
+    margin-top: 10px;
     text-align: center;
     transition: background-color 0.3s, transform 0.3s ease;
 }
@@ -115,7 +112,6 @@ button:hover{
     border: none;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 15px;
     transition: background-color 0.3s, transform 0.3s ease;
 }
 

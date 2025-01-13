@@ -21,8 +21,9 @@
         <div class="link">
             <p><strong><%=link.link_id %>. <%= link.name %></strong></p>
             <span><%= link.created_at.toDateString() %></span>
-            <div><strong>Short URL: </strong><span><%=host+"link/"+link.link_id %></span></div>
-            <div><strong>Redirect URL: </strong><span><%= link.redirect_to %></span></div>
+            <hr style="color: black !important">
+            <div><strong>Short URL: <br></strong><span><%=host+"link/"+link.link_id %></span></div>
+            <div><strong>Redirect URL: <br></strong><span><%= link.redirect_to %></span></div>
             <div><strong>TAG(s): </strong><span class="tagname"><%= link.tagname %></span></div>
             <div><strong>Description: </strong><span><%= link.description %></span></div>
             <a href="<%=host+"link/"+link.link_id %>" target="_blank">Go to link</a>
