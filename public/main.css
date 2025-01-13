@@ -1,6 +1,9 @@
 body{
     font-family: Arial, sans-serif;
 }
+#links{
+    display: none;
+}
 
 form{
     display: flex;
@@ -133,10 +136,13 @@ button:hover {
         flex-direction: column;
     }
     form {
-        width: 100%;
+        width: 80%;
     }
     .link {
-        width: 100%;
+        width: 80%;
+    }
+    #links {
+        display: block;
     }
     
 }

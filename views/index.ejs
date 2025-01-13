@@ -17,6 +17,7 @@
         <textarea type="text" name="description" placeholder="Small Description"></textarea>
         <button type="submit" class="btn">Shorten</button>
     </form>
+    <h1 id="links">Shortened Links:</h1>
     <% for (const link of links) { %>
         <div class="link">
             <p><strong><%=link.link_id %>. <%= link.name %></strong></p>
