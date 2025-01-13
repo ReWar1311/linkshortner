@@ -124,3 +124,19 @@ button:hover {
     font-weight: 600;
     color: #2980b9;
 }
+
+@media (max-width: 600px) {
+    .container {
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+    form {
+        width: 100%;
+    }
+    .link {
+        width: 100%;
+    }
+    
+}
