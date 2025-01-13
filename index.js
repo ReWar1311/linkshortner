@@ -3,11 +3,16 @@ import pg from "pg";
 import postgres from 'postgres';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import path from 'path';
 
 
 dotenv.config();
 const url=process.env.DATABASE_URL;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 
 const app = express();
