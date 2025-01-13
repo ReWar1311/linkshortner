@@ -3,6 +3,8 @@ import pg from "pg";
 import postgres from 'postgres';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import path from 'path';
+
 
 dotenv.config();
 const url=process.env.DATABASE_URL;
@@ -13,6 +15,7 @@ const PORT = 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
  
 const sql = postgres(url);
