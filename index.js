@@ -49,7 +49,6 @@ app.post("/shorten", async (req, res) => {
 app.post("/delete/:id", async (req, res) => {
   const { id } = req.params;
   const result = await sql`DELETE FROM links WHERE link_id = ${id}`;
-  const result2 = await sql`DELETE FROM linkclicks WHERE link_id = ${id}`;
   res.status(200).send('Link deleted successfully');;
 });
   
