@@ -7,7 +7,7 @@
     <title>Link Shortener</title>
 </head>
 <body>
-    <h1>Link Shortener</h1>
+    <h1>Link Shortener <button><a href="/logout">Logout</a></button></h1>
     <div class="container">
     <form action="/shorten" method="post">
         <p>Shorten a new link:</p>
@@ -32,6 +32,7 @@
             <button type="submit" onclick="deleteLink('<%= link.link_id %>')">Delete</button>
         </div>
     <% } %>
+   
     </div>
     <script>
         function deleteLink(linkId) {
