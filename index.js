@@ -16,13 +16,14 @@ dotenv.config();
 const url=process.env.DATABASE_URL;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const SECRET_KEY2 = process.env.SECRET_KEY;
 
 
 
 const app = express();
 const PORT = 4000;
 app.use(cookieParser());
-const SECRET_KEY = process.env.SECRET_KEY;
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -58,7 +59,7 @@ const authenticateToken = (req, res, next) => {
 
   if (token2 == "") return res.render("login.ejs", { message: "Please login first" });
   const decoded = jwt.decode(token2);
-  jwt.verify(token2, SECRET_KEY, (err, user) => {
+  jwt.verify(token2, SECRET_KEY2, (err, user) => {
     if (err) return res.render("login.ejs", { message: "Session expired, please login again" });
     // req.user = user;
     // user_id = decoded.userId;
@@ -81,8 +82,8 @@ app.post("/login", async (req, res) => {
   }
   else{
     const token = jwt.sign(
-      { userId: userexist.business_id, username: userexist.user_name },
-      SECRET_KEY,
+      { userId: userexist.user_id, username: userexist.username },
+      SECRET_KEY2,
       {
         expiresIn: "1h", // Token expires in 1 hour
       }
