@@ -393,10 +393,11 @@ app.get("/link/:id", async (req, res) => {
     userIP = req.headers['x-forwarded-for'].split(',')[0];  // The first IP in the list is the user's original IP
   }
   console.log(userIP);
-  
+
   const result = await sql`SELECT redirect_to FROM links WHERE link_id = ${id}`;
-  const details = await axios.get("http://ip-api.com/json/"+userIP);
   try {
+    const details = await axios.get("http://ip-api.com/json/"+userIP);
+    console.log(details.data);
     const updatedUser = await sql`
       INSERT INTO linkclicks (
         status, country, country_code, region, region_name, city, zip, lat, lon, timezone, isp, org, as_full, query, link_id, user_ip,user_id
