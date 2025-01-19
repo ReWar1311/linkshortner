@@ -367,7 +367,7 @@ app.post("/forgotpassword", async (req, res) => {
     return res.render("forgotpassword.ejs", { message: "Email not found" });
   }
   const otp = Math.floor(100000 + Math.random() * 900000);
-  sendaMail({ name: user[0].first_name, email: user[0].email, otp: otp });
+  await sendaMail({ name: user[0].first_name, email: user[0].email, otp: otp });
   res.render("resetpassword.ejs", { email: user[0].email, token: otp });
   })
 
