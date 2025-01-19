@@ -392,6 +392,8 @@ app.get("/link/:id", async (req, res) => {
   if (req.headers['x-forwarded-for']) {
     userIP = req.headers['x-forwarded-for'].split(',')[0];  // The first IP in the list is the user's original IP
   }
+  console.log(userIP);
+  
   const result = await sql`SELECT redirect_to FROM links WHERE link_id = ${id}`;
   const details = await axios.get("http://ip-api.com/json/"+userIP);
   try {
