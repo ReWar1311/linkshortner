@@ -29,6 +29,8 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = "/oauth";
 const sql = postgres(url);
 
+console.log(SECRET_KEY2,JWT_SECRET,CLIENT_ID,CLIENT_SECRET,REDIRECT_URI);
+
 
 
 
@@ -43,15 +45,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static( path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(
-  session({
-      secret: JWT_SECRET,
-      resave: false,
-      saveUninitialized: true,
-  })
-);
+// app.use(
+//   session({
+//       secret: JWT_SECRET,
+//       resave: false,
+//       saveUninitialized: true,
+//   })
+// );
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 // Passport configuration for Google OAuth
 passport.use(
