@@ -29,6 +29,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = "/oauth";
 const sql = postgres(url);
 
+console.log(SECRET_KEY2,JWT_SECRET,CLIENT_ID,CLIENT_SECRET,REDIRECT_URI);
 
 
 
@@ -60,7 +61,7 @@ passport.use(
       {
           clientID: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
-          callbackURL: "https://www.prashantrewar.me/oauth",
+          callbackURL: REDIRECT_URI,
       },
       (accessToken, refreshToken, profile, done) => {
           // Attach access token to the user profile
