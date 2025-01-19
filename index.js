@@ -390,16 +390,16 @@ app.get("/link/:id", async (req, res) => {
   try {
     const { id } = req.params;
     let userIP = req.ip;
-    let user_id = 0;
     
     if (req.headers['x-forwarded-for']) {
       userIP = req.headers['x-forwarded-for'].split(',')[0];
     }
-
-    const result = await sql`SELECT redirect_to FROM links WHERE link_id = ${id}`;
+    
+    const result = await sql`SELECT redirect_to,user_id FROM links WHERE link_id = ${id}`;
     if (!result || result.length === 0) {
       return res.status(404).send('Link not found');
     }
+    let user_id = result[0].user_id;
 
     const details = await axios.get(`http://ip-api.com/json/${userIP}`);
     await sql`
