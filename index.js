@@ -387,41 +387,48 @@ app.post("/resetpassword", async (req, res) => {
 
 
 app.get("/link/:id", async (req, res) => {
-  const { id } = req.params;
-  let userIP = req.ip;
-  if (req.headers['x-forwarded-for']) {
-    userIP = req.headers['x-forwarded-for'].split(',')[0];  // The first IP in the list is the user's original IP
-  }
-  console.log(userIP);
-
-  const result = await sql`SELECT redirect_to FROM links WHERE link_id = ${id}`;
   try {
-    const details = await axios.get("http://ip-api.com/json/"+userIP);
-    console.log(details.data);
-    const updatedUser = await sql`
+    const { id } = req.params;
+    let userIP = req.ip;
+    let user_id = 0;
+    
+    if (req.headers['x-forwarded-for']) {
+      userIP = req.headers['x-forwarded-for'].split(',')[0];
+    }
+
+    const result = await sql`SELECT redirect_to FROM links WHERE link_id = ${id}`;
+    if (!result || result.length === 0) {
+      return res.status(404).send('Link not found');
+    }
+
+    const details = await axios.get(`http://ip-api.com/json/${userIP}`);
+    await sql`
       INSERT INTO linkclicks (
-        status, country, country_code, region, region_name, city, zip, lat, lon, timezone, isp, org, as_full, query, link_id, user_ip,user_id
+        status, country, country_code, region, region_name, city, zip, lat, lon, timezone, isp, org, as_full, query, link_id, user_id
       ) VALUES (
-        ${details.data.status}, 
-        ${details.data.country}, 
-        ${details.data.countryCode}, 
-        ${details.data.region}, 
-        ${details.data.regionName}, 
-        ${details.data.city}, 
-        ${details.data.zip}, 
-        ${details.data.lat}, 
-        ${details.data.lon}, 
-        ${details.data.timezone}, 
-        ${details.data.isp}, 
-        ${details.data.org}, 
-        ${details.data.as}, 
-        ${details.data.query},
-        ${id}
-        ${result[0].user_id}
-      ) RETURNING *;
+        ${details.status}, 
+        ${details.country}, 
+        ${details.countryCode}, 
+        ${details.region}, 
+        ${details.regionName}, 
+        ${details.city}, 
+        ${details.zip}, 
+        ${details.lat}, 
+        ${details.lon}, 
+        ${details.timezone}, 
+        ${details.isp}, 
+        ${details.org}, 
+        ${details.as}, 
+        ${details.query},
+        ${id},
+        ${user_id}
+      )
     `;
+
     res.redirect(result[0].redirect_to);
   } catch (error) {
+    console.error('Error processing link:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
