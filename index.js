@@ -290,7 +290,7 @@ app.get("/clicks/:id",authenticateToken, async (req, res) => {
   try{
   const result = await sql`SELECT * FROM linkclicks WHERE link_id = ${id}`;
   if (result.length > 0) {
-  res.send(result);}
+  res.render( "clicks.ejs", { clicks: result});}
   else{
     res.send("No clicks found");
   }}

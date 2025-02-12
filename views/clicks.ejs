@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicks</title>
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #3498db;
+        color: white;
+    }
+    .canvas {
+        width: 30vw;
+    }
+    .canvas-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    @media screen and (max-width: 768px) {
+        .canvas-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        .canvas {
+            width: 100%;
+        }
+        .opt {
+            display: none;
+        }
+    }
+
+</style>
+<body>
+    Total Clicks: <%= clicks.length %>
+    <br>
+    <div class="canvas-container">
+    <div class="canvas">
+    <canvas id="datewise-chart"></canvas></div>
+    <div class="canvas">
+    <canvas id="countrywise-chart"></canvas></div>
+    <div class="canvas">
+    <canvas id="citywise-chart"></canvas></div></div>
+    <table>
+        <tr>
+            <th class="opt">Click ID</th>
+            <th>IP Address</th>
+            <th class="opt">Country</th>
+            <th>City</th>
+            <th class="opt">ISP</th>
+            <th>Date</th>
+            <th class="opt">Time</th>
+        </tr>
+        <% for (const click of clicks) { %>
+            <tr>
+                <td class="opt"><%= click.id %></td>
+                <td><%= click.query %></td>
+                <td class="opt"><%= click.country %></td>
+                <td><%= click.city %></td>
+                <td class="opt"><%= click.isp %></td>
+                <td><%= click.created_at.toISOString().split('T')[0] %></td>
+                <td class="opt"><%= click.created_at.toISOString().split('T')[1].split('.')[0] %></td>
+            </tr>
+        <% } %>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const clicklist = JSON.parse('<%- JSON.stringify(clicks) %>').map(click => ({
+        ...click,
+        created_at: new Date(click.created_at)
+    }));
+    console.log(clicklist);
+    const datewisechart = document.getElementById('datewise-chart').getContext('2d');
+    const countrywisechart = document.getElementById('countrywise-chart').getContext('2d');
+    const ctx = document.getElementById('citywise-chart').getContext('2d');
+    const dateCount = {};
+    const countryCount = {};
+    const cityCount = {};
+    
+    clicklist.forEach(click => {
+        const date = click.created_at.toISOString().split('T')[0];
+        const country = click.country;
+        const city = click.city;
+        dateCount[date] = (dateCount[date] || 0) + 1;
+        countryCount[country] = (countryCount[country] || 0) + 1;
+        cityCount[city] = (cityCount[click.city] || 0) + 1;
+    });
+
+    new Chart(datewisechart, {
+        type: 'line',
+        data: {
+            labels: Object.keys(dateCount),
+            datasets: [{
+                label: 'Total Clicks',
+                data: Object.values(dateCount),
+                fill: false,
+                borderColor: "tomato",
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    new Chart(countrywisechart, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(countryCount),
+            datasets: [{
+                label: 'Total Clicks',
+                data: Object.values(countryCount),
+                backgroundColor: "tomato",
+                borderColor: "tomato",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(cityCount),
+            datasets: [{
+                label: 'Total Clicks',
+                data: Object.values(cityCount),
+                backgroundColor: "tomato",
+                borderColor: "tomato",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</html>
