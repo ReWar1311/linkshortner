@@ -19,6 +19,7 @@
 
  async function sendaMail(params) {
     console.log("Sending email to", params.email);
+   await new Promise((resolve, reject) => {
     transporter.sendMail({
         from:'"OTP Verification" <no-reply@prashantrewar.me>',
         to:params.email,
@@ -47,12 +48,17 @@
     </div>
 
 </body>
-`
-    }).then(() => {
-        console.log("Email sent to", params.email);
-    }).catch((error) => {
-        console.error("Error sending email:", error);
+`},
+     (err, info) => {
+        if (err) {
+            console.error(err);
+            reject(err);
+        } else {
+            console.log(info);
+            resolve(info);
+        }
     });
+});
  }
 
 export default sendaMail;
