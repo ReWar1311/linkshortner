@@ -327,7 +327,7 @@ app.post("/signup", async (req, res) => {
     return res.render("signup.ejs", { message: "Email already exists,try login" });
   }
   const otp = Math.floor(100000 + Math.random() * 900000);
-  sendaMail({ name: name, email: email, otp: otp });
+  await sendaMail({ name: name, email: email, otp: otp });
   res.render("otp.ejs", { name: name, email: email, username: username, password: password ,token:otp});
 
   ;})
